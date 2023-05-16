@@ -1,34 +1,41 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public class GameManager : MonoBehaviourSingletonPersistent<GameManager>
+namespace _Game.Scripts.Managers
 {
-    [field: SerializeField]
-    public bool GameOver { get; set; } = true;
-
-    [SerializeField]
-    private Button _btnStart;
-
-    private void Start()
+    public class GameManager : MonoBehaviourSingletonPersistent<GameManager>
     {
-        _btnStart.onClick.AddListener(() => StartGame());
-        _btnStart.gameObject.SetActive(true);
-    }
+        [field: SerializeField] public bool GameOver { get; set; }
 
-    private void Update()
-    {
-        if (GameOver)
+        [SerializeField] private Button _btnStart;
+
+        public override void Awake()
         {
+            base.Awake();
+            GameOver = true;
+        }
+
+        private void Start()
+        {
+            _btnStart.onClick.AddListener(StartGame);
             _btnStart.gameObject.SetActive(true);
         }
-    }
 
-    public void StartGame()
-    {
-        _btnStart.gameObject.SetActive(false);
-        GameOver = false;
+        private void Update()
+        {
+            if (GameOver && !_btnStart.gameObject.activeSelf)
+            {
+                _btnStart.gameObject.SetActive(true);
+            }
+        }
 
-        PlayerController.Instance.Spawn();
-        MobController.Instance.Clear();
+        private void StartGame()
+        {
+            _btnStart.gameObject.SetActive(false);
+            GameOver = false;
+
+            PlayerController.Instance.Spawn();
+            MobController.Instance.Clear();
+        }
     }
 }

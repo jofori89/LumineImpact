@@ -1,13 +1,15 @@
 using UnityEngine;
 
-public class CheckPointManager : MonoBehaviour
+namespace _Game.Scripts.Managers
 {
-
-    private void OnTriggerEnter2D(Collider2D collision)
+    public class CheckPointManager : MonoBehaviour
     {
-        if (collision.gameObject.CompareTag("Player"))
+        private void OnTriggerEnter2D(Collider2D collision)
         {
-            MobController.Instance.Spawn(gameObject.transform.position + new Vector3(1, 0, 0));
+            if (collision.gameObject.CompareTag("Player"))
+            {
+                MobController.Instance.Spawn(gameObject.transform.position + new Vector3(1, 0, 0));
+            }
         }
     }
 }
